@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    environment {
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-sa') 
+    }
+    
+    stages {
+        stage('Terraform Apply') {
+            steps {
+                script {
+                    // Initialize and apply Terraform configuration
+                    sh 'terraform init'
+                    sh 'terraform apply -auto-approve'
+                    
+                    // Capture the output IP addresses from Terraform
+                    def instanceIp = sh(script: 'terraform output -json instance_ip', returnStdout: true).trim()
+                    
+                    // Write the Ansible inventory file
+                    writeFile file: 'hosts', text: "[webservers]\n${instanceIp}"
+                }
+            }
+        }
+
+        stage('Check SSH Connection') {
+            steps {
+                script {
+                    // Check if the instance is reachable via SSH
+                    def instanceIp = readFile('hosts').trim().tokenize('\n')[1]
+                    echo "Checking SSH connection to ${instanceIp}..."
+                    def sshResult = sh(script: "ssh -o StrictHostKeyChecking=no -o BatchMode=yes ansibleuser@${instanceIp} 'exit'", returnStatus: true)
+                    
+                    if (sshResult != 0) {
+                        error "SSH connection to ${instanceIp} failed with status ${sshResult}. Please check your firewall rules and instance status."
+                    }
+                }
+            }
+        }
+        
+        stage('Install HTTP Service') {
+            steps {
+                script {
+                    // Run Ansible Playbook with the generated inventory file
+                    sh 'ansible-playbook -i hosts install_http.yml'
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            // Cleanup or notify in case of failure
+            echo 'The pipeline has failed. Please check the logs.'
+        }
+        success {
+            echo 'The pipeline completed successfully.'
+        }
+    }
+}
