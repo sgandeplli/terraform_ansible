@@ -27,7 +27,7 @@ resource "google_compute_instance" "centos_vm" {
 }
 
 output "vm_ip" {
-  value = google_compute_instance.centos_vm.network_interface.0.access_config.0.nat_ip
+  value = google_compute_instance.centos_vm.network_interface[0].access_config[0].nat_ip
 }
 
 resource "null_resource" "update_inventory" {
