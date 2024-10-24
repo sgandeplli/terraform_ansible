@@ -46,5 +46,5 @@ resource "null_resource" "update_inventory" {
     EOT
   }
 
-  depends_on = [google_compute_instance_group_manager.default]
+  depends_on = [google_compute_instance.centos_vm]
 }
