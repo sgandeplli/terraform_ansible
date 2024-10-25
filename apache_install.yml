@@ -1,6 +1,6 @@
 ---
 - name: Install HTTP service on the instance
-  hosts: webservers
+  hosts: web
   become: yes
   tasks:
     - name: Install Apache
