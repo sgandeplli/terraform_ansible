@@ -35,12 +35,12 @@ resource "null_resource" "update_inventory" {
     command = <<EOT
       INSTANCE_ID=${google_compute_instance.centos_vm.name}
       INSTANCE_IP=${google_compute_instance.centos_vm.network_interface.0.access_config.0.nat_ip}
-      echo 'all:' > /var/lib/jenkins/workspace/git-terra-ans/inventory.gcp.yml
-      echo '  hosts:' >> /var/lib/jenkins/workspace/git-terra-ans/inventory.gcp.yml
-      echo "    web_$INSTANCE_ID:" >> /var/lib/jenkins/workspace/git-terra-ans/inventory.gcp.yml
-      echo "      ansible_host: $INSTANCE_IP" >> /var/lib/jenkins/workspace/git-terra-ans/inventory.gcp.yml
-      echo "      ansible_user: centos" >> /var/lib/jenkins/workspace/git-terra-ans/inventory.gcp.yml
-      echo "      ansible_ssh_private_key_file: /root/.ssh/id_rsa" >> /var/lib/jenkins/workspace/git-terra-ans/inventory.gcp.yml
+      echo 'all:' > /var/lib/jenkins/workspace/terra-ansible/inventory.gcp.yml
+      echo '  hosts:' >> /var/lib/jenkins/workspace/terra-ansible/inventory.gcp.yml
+      echo "    web_$INSTANCE_ID:" >> /var/lib/jenkins/workspace/terra-ansible/inventory.gcp.yml
+      echo "      ansible_host: $INSTANCE_IP" >> /var/lib/jenkins/workspace/terra-ansible/inventory.gcp.yml
+      echo "      ansible_user: centos" >> /var/lib/jenkins/workspace/terra-ansible/inventory.gcp.yml
+      echo "      ansible_ssh_private_key_file: /root/.ssh/id_rsa" >> /var/lib/jenkins/workspace/terra-ansible/inventory.gcp.yml
     EOT
   }
 
