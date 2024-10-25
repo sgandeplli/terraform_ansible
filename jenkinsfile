@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/aniljeenapati/ansible.git'
+                git branch: 'main', url: 'https://github.com/sgandeplli/terraform_ansible.git'
             }
         }
         stage('Terraform Init & Apply') {
@@ -48,7 +48,7 @@ pipeline {
         }
         stage('Install Apache using Ansible') {
             steps {
-                sh 'ansible-playbook -i /var/lib/jenkins/workspace/git-terra-ans/inventory.gcp.yml /var/lib/jenkins/workspace/git-terra-ans/apache_install.yml'
+                sh 'ansible-playbook -i /var/lib/jenkins/workspace/terra-ansible/inventory.gcp.yml /var/lib/jenkins/workspace/terra-ansible/apache_install.yml'
             }
         }
     }
