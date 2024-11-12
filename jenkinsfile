@@ -52,5 +52,17 @@ pipeline {
             }
         }
     }
+post {
+        always {
+            emailext body: '''
+                <h1>Build Report - ${currentBuild.result}</h1>
+                <p>Job Name: ${env.JOB_NAME}</p>
+                <p>Build Number: ${env.BUILD_NUMBER}</p>
+                <p>View Details: <a href="${env.BUILD_URL}">Jenkins Build URL</a></p>
+            ''',
+            subject: '[Jenkins] Pipeline ${env.JOB_NAME} - ${currentBuild.result}',
+            to: 'sekhargandepalli16@gmail.com'  // Replace with the desired recipient email
+        }
+    }
    
 }
