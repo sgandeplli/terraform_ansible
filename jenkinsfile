@@ -65,7 +65,7 @@ post {
                                 <p>Check the build: <a href="${BUILD_URL}">${BUILD_URL}</a></p>
                             </body>
                           </html>''',
-                to: 'sbappadala@softility.com',
+                to: 'sekhargandepalli16@gmail.com',
                 from: 'jenkins@example.com',
                 replyTo: 'jenkins@example.com',
                 mimeType: 'text/html'
